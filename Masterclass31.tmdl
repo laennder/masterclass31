@@ -389,7 +389,7 @@ createOrReplace
 				formatString: 0
 				lineageTag: b2cdce25-087f-4c45-a7be-4fe812c0220f
 
-			measure 'Qtde Pedidos' = DISTINCTCOUNT(Vendas[Pedido])
+			measure 'Qtde Pedidos' = DISTINCTCOUNT(Vendas[Pedido]) + 0
 				formatString: 0
 				lineageTag: 2d59a133-e81e-4873-bb05-484a6b816000
 
