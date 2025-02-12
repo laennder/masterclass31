@@ -108,6 +108,14 @@ createOrReplace
 
 				annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+			column 'Vl.Total' = Vendas[Qtde] * Vendas[Vl.Unitario]
+				lineageTag: 3c5ee82b-9752-49ef-9027-343c0f72a032
+				summarizeBy: sum
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 			partition Vendas = m
 				mode: import
 				source =
@@ -367,7 +375,7 @@ createOrReplace
 
 				annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-			measure 'Soma Vendas' = SUMX(Vendas, Vendas[Qtde] * Vendas[Vl.Unitario])
+			measure 'Soma Vendas' = SUM(Vendas[Vl.Total])
 				lineageTag: 56e179d4-008a-4e5c-8fc3-f064dfd7a10f
 
 				annotation PBI_FormatHint = {"isGeneralNumber":true}
