@@ -1,0 +1,529 @@
+createOrReplace
+
+	model Model
+		culture: pt-BR
+		defaultPowerBIDataSourceVersion: powerBI_V3
+		discourageImplicitMeasures
+		sourceQueryCulture: pt-BR
+		dataAccessOptions
+			legacyRedirects
+			returnErrorValuesAsNull
+
+		table Vendas
+			lineageTag: 36bc3038-db67-47a5-80c8-62093f71ba02
+
+			column Pedido
+				dataType: int64
+				formatString: 0
+				lineageTag: 531014e3-0ae5-435f-816f-8b0bd283ad62
+				summarizeBy: sum
+				sourceColumn: Pedido
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Data.Pedido'
+				dataType: dateTime
+				formatString: Long Date
+				lineageTag: 30759599-0545-4906-ab3d-f0a0fcf1f7ff
+				summarizeBy: none
+				sourceColumn: Data.Pedido
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation UnderlyingDateTimeDataType = Date
+
+			column 'Data.Entrega'
+				dataType: dateTime
+				formatString: Long Date
+				lineageTag: be56330e-ccfe-4283-a1fc-480a515ab3b6
+				summarizeBy: none
+				sourceColumn: Data.Entrega
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation UnderlyingDateTimeDataType = Date
+
+			column 'Cod.Vendedor'
+				dataType: int64
+				formatString: 0
+				lineageTag: e9987326-3c78-4db9-86ca-6e9e99a11348
+				summarizeBy: none
+				sourceColumn: Cod.Vendedor
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Cod.Unidade'
+				dataType: int64
+				formatString: 0
+				lineageTag: 592eb993-2770-4868-af42-29c9bb4e9b0a
+				summarizeBy: none
+				sourceColumn: Cod.Unidade
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Cod.Cliente'
+				dataType: int64
+				formatString: 0
+				lineageTag: 4a205bf2-02e4-4816-bb58-1aef45c6cd54
+				summarizeBy: none
+				sourceColumn: Cod.Cliente
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Cod.Produto'
+				dataType: int64
+				formatString: 0
+				lineageTag: 8275a908-05f7-4c59-8d3f-3cf0a47560cf
+				summarizeBy: none
+				sourceColumn: Cod.Produto
+
+				annotation SummarizationSetBy = Automatic
+
+			column Qtde
+				dataType: int64
+				formatString: 0
+				lineageTag: e3801086-432b-4c47-a736-794bc2baf946
+				summarizeBy: sum
+				sourceColumn: Qtde
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Vl.Unitario'
+				dataType: double
+				lineageTag: ee6b7953-ebea-4698-819d-2c793bddc22d
+				summarizeBy: sum
+				sourceColumn: Vl.Unitario
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column 'Vl.Frete'
+				dataType: double
+				lineageTag: ca87da13-aa0f-482c-aa84-e99cb223a5c4
+				summarizeBy: sum
+				sourceColumn: Vl.Frete
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			partition Vendas = m
+				mode: import
+				source =
+						let
+						    Fonte = Excel.Workbook(File.Contents("G:\Drives compartilhados\Conteúdo\00. Base\Vendas.xlsx"), null, true),
+						    Vendas_Table = Fonte{[Item="Vendas",Kind="Table"]}[Data],
+						    #"Tipo Alterado" = Table.TransformColumnTypes(Vendas_Table,{{"Pedido", Int64.Type}, {"Data.Pedido", type date}, {"Data.Entrega", type date}, {"Cod.Vendedor", Int64.Type}, {"Cod.Unidade", Int64.Type}, {"Cod.Cliente", Int64.Type}, {"Cod.Produto", Int64.Type}, {"Qtde", Int64.Type}, {"Vl.Unitario", type number}, {"Vl.Frete", type number}})
+						in
+						    #"Tipo Alterado"
+
+			annotation PBI_NavigationStepName = Navegação
+
+			annotation PBI_ResultType = Table
+
+		table Vendedores
+			lineageTag: aeb96f07-4c77-4a39-adab-9c89288bafc2
+
+			column 'Cod.Vendedor'
+				dataType: int64
+				formatString: 0
+				lineageTag: f29d8114-cffd-4b02-8467-a54a6d9486d6
+				summarizeBy: none
+				sourceColumn: Cod.Vendedor
+
+				annotation SummarizationSetBy = Automatic
+
+			column Vendedor
+				dataType: string
+				lineageTag: 53d1b426-fb77-4f0f-b459-dd11cc6b04fe
+				summarizeBy: none
+				sourceColumn: Vendedor
+
+				annotation SummarizationSetBy = Automatic
+
+			column Gerente
+				dataType: string
+				lineageTag: 51702cdd-475d-4b95-9f81-4d9ef7418bf4
+				summarizeBy: none
+				sourceColumn: Gerente
+
+				annotation SummarizationSetBy = Automatic
+
+			partition Vendedores = m
+				mode: import
+				source =
+						let
+						    Fonte = Excel.Workbook(File.Contents("G:\Drives compartilhados\Conteúdo\00. Base\Dimensões.xlsx"), null, true),
+						    Vendedores_Table = Fonte{[Item="Vendedores",Kind="Table"]}[Data],
+						    #"Tipo Alterado" = Table.TransformColumnTypes(Vendedores_Table,{{"Cod.Vendedor", Int64.Type}, {"Vendedor", type text}, {"Gerente", type text}})
+						in
+						    #"Tipo Alterado"
+
+			annotation PBI_ResultType = Table
+
+			annotation PBI_NavigationStepName = Navegação
+
+		table Unidades
+			lineageTag: 62a3b41d-c4ca-4fa2-9685-5d87edb0309f
+
+			column 'Cod.Unidade'
+				dataType: int64
+				formatString: 0
+				lineageTag: c4681e5a-0849-4149-a032-11aa97776e8d
+				summarizeBy: none
+				sourceColumn: Cod.Unidade
+
+				annotation SummarizationSetBy = Automatic
+
+			column Unidade
+				dataType: string
+				lineageTag: 201b34f4-c1cd-4349-9ecf-9b1036b8aa67
+				summarizeBy: none
+				sourceColumn: Unidade
+
+				annotation SummarizationSetBy = Automatic
+
+			partition Unidades = m
+				mode: import
+				source =
+						let
+						    Fonte = Excel.Workbook(File.Contents("G:\Drives compartilhados\Conteúdo\00. Base\Dimensões.xlsx"), null, true),
+						    Tabela2_Table = Fonte{[Item="Unidades",Kind="Table"]}[Data],
+						    #"Tipo Alterado" = Table.TransformColumnTypes(Tabela2_Table,{{"Cod.Unidade", Int64.Type}, {"Unidade", type text}})
+						in
+						    #"Tipo Alterado"
+
+			annotation PBI_ResultType = Table
+
+			annotation PBI_NavigationStepName = Navegação
+
+		table Produtos
+			lineageTag: 96bac06e-5a9a-4f57-ad24-2c89cbebfa11
+
+			column 'Cod.Produto'
+				dataType: int64
+				formatString: 0
+				lineageTag: a5eb156a-3415-403d-a96b-ee0a49418f86
+				summarizeBy: none
+				sourceColumn: Cod.Produto
+
+				annotation SummarizationSetBy = Automatic
+
+			column Produto
+				dataType: string
+				lineageTag: 24fe168d-da93-400b-a164-72f157089ae0
+				summarizeBy: none
+				sourceColumn: Produto
+
+				annotation SummarizationSetBy = Automatic
+
+			column Categoria
+				dataType: string
+				lineageTag: e27aaf9b-2c13-495a-91c8-1b1ffcb5b67e
+				summarizeBy: none
+				sourceColumn: Categoria
+
+				annotation SummarizationSetBy = Automatic
+
+			partition Produtos = m
+				mode: import
+				source =
+						let
+						    Fonte = Excel.Workbook(File.Contents("G:\Drives compartilhados\Conteúdo\00. Base\Dimensões.xlsx"), null, true),
+						    Produtos_Table = Fonte{[Item="Produtos",Kind="Table"]}[Data],
+						    #"Tipo Alterado" = Table.TransformColumnTypes(Produtos_Table,{{"Cod.Produto", Int64.Type}, {"Produto", type text}, {"Categoria", type text}})
+						in
+						    #"Tipo Alterado"
+
+			annotation PBI_ResultType = Table
+
+			annotation PBI_NavigationStepName = Navegação
+
+		table Clientes
+			lineageTag: bbdefeef-2b23-41f8-9ce3-3af265811457
+
+			column 'Cod.Cliente'
+				dataType: int64
+				formatString: 0
+				lineageTag: 597b9d3b-b2af-402d-b98e-dbbdbc00167b
+				summarizeBy: none
+				sourceColumn: Cod.Cliente
+
+				annotation SummarizationSetBy = Automatic
+
+			column Cliente
+				dataType: string
+				lineageTag: 4d645a61-8f74-4413-86ee-06c4c38859e9
+				summarizeBy: none
+				sourceColumn: Cliente
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Grupo.Cliente'
+				dataType: string
+				lineageTag: 203ebcc5-74fa-41da-b58d-5aa86c86cdea
+				summarizeBy: none
+				sourceColumn: Grupo.Cliente
+
+				annotation SummarizationSetBy = Automatic
+
+			column Cidade
+				dataType: string
+				lineageTag: 0dcdb01d-4370-4f47-879d-f2ade4ac8ce7
+				summarizeBy: none
+				sourceColumn: Cidade
+
+				annotation SummarizationSetBy = Automatic
+
+			column Estado
+				dataType: string
+				lineageTag: 129ee833-9e11-447e-9808-192c2eef5339
+				summarizeBy: none
+				sourceColumn: Estado
+
+				annotation SummarizationSetBy = Automatic
+
+			column FIltro = [Soma Vendas] > 100000
+				formatString: """TRUE"";""TRUE"";""FALSE"""
+				lineageTag: a35e72d6-f163-49ca-9f2e-819625938fbb
+				summarizeBy: none
+
+				annotation SummarizationSetBy = Automatic
+
+			partition Clientes = m
+				mode: import
+				source =
+						let
+						    Fonte = Excel.Workbook(File.Contents("G:\Drives compartilhados\Conteúdo\00. Base\Dimensões.xlsx"), null, true),
+						    Clientes_Table = Fonte{[Item="Clientes",Kind="Table"]}[Data],
+						    #"Tipo Alterado" = Table.TransformColumnTypes(Clientes_Table,{{"Cod.Cliente", Int64.Type}, {"Cliente", type text}, {"Grupo.Cliente", type text}, {"Cidade", type text}, {"Estado", type text}})
+						in
+						    #"Tipo Alterado"
+
+			annotation PBI_ResultType = Table
+
+			annotation PBI_NavigationStepName = Navegação
+
+		table Calendario
+			lineageTag: 0f98086f-375c-4fc7-aca3-9b2b9072ea4d
+			dataCategory: Time
+
+			column Data
+				isKey
+				formatString: Short Date
+				lineageTag: b46eadcb-0cf2-4da4-9a83-0f3d81274883
+				summarizeBy: none
+				sourceColumn: [Date]
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ano = ```
+					YEAR([Data]) 
+					```
+				formatString: 0
+				lineageTag: 680cecee-3a59-4153-80a1-e2099ab52d43
+				summarizeBy: none
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Nome do Mês' = format([Data], "mmmm")
+				lineageTag: 544b8f41-e363-4403-85a9-b8d02afaed8a
+				summarizeBy: none
+				sortByColumn: Mês
+
+				annotation SummarizationSetBy = Automatic
+
+			column Mês = MONTH([Data])
+				formatString: 0
+				lineageTag: 873d68e2-8bd2-4d67-b673-2fb8021ff7b8
+				summarizeBy: none
+
+				annotation SummarizationSetBy = Automatic
+
+			partition Calendario = calculated
+				mode: import
+				source = CALENDARAUTO()
+
+			annotation PBI_Id = c8d702a7712f424998f01a438d538878
+
+		table Medidas
+			lineageTag: 5ac727ed-94ab-4086-8e8f-fb8e752557f5
+
+			measure 'Soma Frete' = ```
+					SUM(Vendas[Vl.Frete]) 
+					```
+				lineageTag: df52714c-244b-41b6-b59c-a2e4a0757075
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure 'Maior Frete' = MAX(Vendas[Vl.Frete])
+				lineageTag: 52e0fd97-0e01-4c7e-a92f-86dedc0ad399
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure 'Frete Médio' = AVERAGE(Vendas[Vl.Frete])
+				lineageTag: 582fa7c9-52d4-463d-86a5-f3626178c42d
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure 'Soma Vendas' = SUMX(Vendas, Vendas[Qtde] * Vendas[Vl.Unitario])
+				lineageTag: 56e179d4-008a-4e5c-8fc3-f064dfd7a10f
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure 'Maior Venda' = MAXX(Vendas, Vendas[Qtde] * Vendas[Vl.Unitario])
+				lineageTag: 7bd6e13b-0557-44cc-86e4-23e4b8e90ab7
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure 'Qtde Vendas' = COUNTROWS(Vendas) + 0
+				formatString: 0
+				lineageTag: b2cdce25-087f-4c45-a7be-4fe812c0220f
+
+			measure 'Qtde Pedidos' = DISTINCTCOUNT(Vendas[Pedido])
+				formatString: 0
+				lineageTag: 2d59a133-e81e-4873-bb05-484a6b816000
+
+			measure 'Ticket Médio' = [Soma Vendas] / [Qtde Pedidos]
+				lineageTag: 36413eaf-2811-4a88-a4d5-eb3e240594e5
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure Categorias = COUNTROWS(VALUES(Produtos[Categoria]))
+				formatString: 0
+				lineageTag: 41f32696-2f2d-40f5-a0b0-60feeccf1c9c
+
+			measure 'Menor Ticket' = ```
+					
+					MINX( VALUES(Vendas[Pedido]) , [Soma Vendas] ) 
+					```
+				lineageTag: a9b990a6-3159-4798-b267-732102b5ebbd
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure 'Média Vendas' = AVERAGEX(Vendas, Vendas[Qtde] * Vendas[Vl.Unitario])
+				lineageTag: 475b897a-fb95-4a40-b21e-03a59bf872d3
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure 'Média Mensal de Vendas' =
+					
+					AVERAGEX(
+					    SUMMARIZE(Calendario, Calendario[Ano], Calendario[Mês]) ,
+					    [Soma Vendas]
+					)
+				lineageTag: cf73bc8b-ab64-4126-a7b4-75132fbb2b73
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column 'Coluna 1'
+				dataType: string
+				isHidden
+				lineageTag: c90518b6-680c-41a6-ab92-1ab3da7e273c
+				summarizeBy: none
+				sourceColumn: Coluna 1
+
+				changedProperty = IsHidden
+
+				annotation SummarizationSetBy = Automatic
+
+			partition Medidas = m
+				mode: import
+				source =
+						let
+						    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+						    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", type text}})
+						in
+						    #"Tipo Alterado"
+
+			annotation PBI_ResultType = Table
+
+		table 'Grupo de cálculo'
+			lineageTag: ad4fd74b-a95d-49b6-b6ff-136aae4aeb1b
+
+			calculationGroup
+
+				calculationItem YoY = CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR(Calendario[Data]))
+
+				calculationItem MoM = CALCULATE(SELECTEDMEASURE(), DATEADD(Calendario[Data], -1, MONTH))
+
+				calculationItem Atual = SELECTEDMEASURE()
+
+			column 'Inteligencia Temporal'
+				dataType: string
+				lineageTag: dc76af4b-0c4b-4866-b4b5-427711a0b717
+				summarizeBy: none
+				sourceColumn: Name
+				sortByColumn: Ordinal
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ordinal
+				dataType: int64
+				formatString: 0
+				lineageTag: 838a4ce5-853c-4d14-97cf-c3ef375437b4
+				summarizeBy: sum
+				sourceColumn: Ordinal
+
+				annotation SummarizationSetBy = Automatic
+
+		table 'Grupo de cálculo 2'
+			lineageTag: b5b67065-e01d-413b-82c6-12cb2cfe2410
+
+			calculationGroup
+				precedence: 1
+
+				calculationItem 'item de cálculo' = SELECTEDMEASURE()
+
+			column 'Coluna do grupo de cálculo'
+				dataType: string
+				lineageTag: 182a44ee-af7c-4bac-8fb7-981ac78137b9
+				summarizeBy: none
+				sourceColumn: Name
+				sortByColumn: Ordinal
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ordinal
+				dataType: int64
+				formatString: 0
+				lineageTag: d05832d8-6568-487f-a23e-aff20bbedd43
+				summarizeBy: sum
+				sourceColumn: Ordinal
+
+				annotation SummarizationSetBy = Automatic
+
+		relationship b9318ed1-b579-4447-98ca-bb2b488db786
+			fromColumn: Vendas.'Cod.Vendedor'
+			toColumn: Vendedores.'Cod.Vendedor'
+
+		relationship c56d8279-e04e-444e-a084-c53b32faf661
+			fromColumn: Vendas.'Cod.Unidade'
+			toColumn: Unidades.'Cod.Unidade'
+
+		relationship e29ed79b-42c1-474f-93f1-d603f56ce3a1
+			fromColumn: Vendas.'Cod.Cliente'
+			toColumn: Clientes.'Cod.Cliente'
+
+		relationship 2aba4161-89bf-4390-a4bc-f953b9a56e44
+			fromColumn: Vendas.'Cod.Produto'
+			toColumn: Produtos.'Cod.Produto'
+
+		relationship 1d55f3bd-a9b6-498e-a7db-bfeac4da8289
+			fromColumn: Vendas.'Data.Pedido'
+			toColumn: Calendario.Data
+
+		cultureInfo pt-BR
+
+			linguisticMetadata = {"Version":"1.0.0","Language":"en-US"}
+				contentType: json
+
+		annotation PBI_QueryOrder = ["Vendas","Vendedores","Unidades","Produtos","Clientes","Medidas"]
+
+		annotation __PBI_TimeIntelligenceEnabled = 0
+
+		annotation PBIDesktopVersion = 2.139.2054.0 (24.12)+334ca1c95b576cc53924655643b0d36f21caac55
+
+		annotation PBI_ProTooling = ["TMDLView_Desktop","CalcGroup"]
+
