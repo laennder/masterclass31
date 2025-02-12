@@ -21,12 +21,12 @@ createOrReplace
 
 				annotation SummarizationSetBy = Automatic
 
-			column 'Data.Pedido'
+			column 'Data Pedido'
 				dataType: dateTime
 				formatString: Long Date
 				lineageTag: 30759599-0545-4906-ab3d-f0a0fcf1f7ff
 				summarizeBy: none
-				sourceColumn: Data.Pedido
+				sourceColumn: Data Pedido
 
 				annotation SummarizationSetBy = Automatic
 
